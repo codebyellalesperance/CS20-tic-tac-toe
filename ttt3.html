@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe - Part 3</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-gap: 5px;
+            margin-top: 20px;
+        }
+        .square {
+            width: 100px;
+            height: 100px;
+            background-color: lightgray;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2em;
+        }
+        .square:hover {
+            background-color: darkgrey;
+        }
+        #turnIndicator, #winCondition {
+            border: 1px solid black;
+            padding: 10px;
+            margin: 10px 0;
+            width: 300px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cool Tic Tac Toe</h1>
+    <div id="turnIndicator">X's Turn</div>
+    <script>
+        const NUM_SQUARES = 9;
+        document.write('<div class="board">');
+        for (let i = 0; i < NUM_SQUARES; i++) {
+            let id = "sq" + i;
+            document.write("<div class='square' id='" + id + "'></div>");
+        }
+        document.write('</div>');
+    </script>
+    <div id="winCondition">Win condition will be displayed here</div>
+    <button id="startGame">Start Game</button>
+
+    <script>
+        let isXTurn = Math.random() < 0.5; 
+        document.getElementById('turnIndicator').textContent = isXTurn ? "X's Turn" : "O's Turn";
+
+        function handleClick(event) {
+            const square = event.target;
+            const squareId = square.id.replace('sq', ''); // Get the square number
+            if (square.textContent === '') {
+                square.textContent = isXTurn ? 'X' : 'O';
+                alert(`Square ${squareId} clicked`);
+                isXTurn = !isXTurn; // Switch turns
+                document.getElementById('turnIndicator').textContent = isXTurn ? "X's Turn" : "O's Turn";
+            }
+        }
+
+        function startGame() {
+            isXTurn = Math.random() < 0.5; 
+            document.getElementById('turnIndicator').textContent = isXTurn ? "X's Turn" : "O's Turn";
+            const squares = document.querySelectorAll('.square');
+            squares.forEach(square => {
+                square.textContent = '';
+                square.addEventListener('click', handleClick, { once: true });
+            });
+        }
+
+        window.onload = function() {
+            startGame(); // Initialize the game
+            document.getElementById('startGame').addEventListener('click', startGame);
+        };
+    </script>
+</body>
+</html>
